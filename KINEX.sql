@@ -759,7 +759,72 @@ Delimiter $$
 
 Delimiter ;
 
+-- ---------------------------------------Agregar Tipo Cliente --------------------------------------
 
+delimiter $$
+   create procedure sp_agregarTipoCliente(in desTCli varchar(150))
+      begin
+         insert into TipoCliente(descripcionTipoCliente)
+            values(desTCli);
+      end$$
+delimiter ;
+
+call sp_agregarTipoCliente('');
+call sp_agregarTipoCliente('');
+call sp_agregarTipoCliente('');
+call sp_agregarTipoCliente('');
+
+-- ----------------------------------------Listar Tipo Cliente --------------------------------------
+
+delimiter $$
+   create procedure sp_listarTipoClientes()
+      begin
+         select
+            TC.codigoTipoCliente,
+            TC.descripcionTipoCliente
+		 from TipoCliente TC;
+      end$$
+delimiter ;
+
+call sp_listarTipoClientes();
+
+-- ----------------------------------------Buscar Tipo Cliente --------------------------------------
+
+delimiter $$
+   create procedure sp_buscarTipoCliente(in codTCli int)
+      begin
+		select
+            TC.codigoTipoCliente,
+            TC.descripcionTipoCliente
+		 from TipoCliente TC where TC.codigoTipoCliente = codTCli;
+      end$$
+delimiter ;
+
+call sp_buscarTipoCliente(2);
+
+-- ----------------------------------------Eliminar Tipo Cliente ------------------------------------
+
+delimiter $$
+   create procedure sp_eliminarTipoCliente(in codTCli int)
+     begin
+        delete from TipoCliente
+           where TipoCliente.codigoTipoCliente = codTCli;
+	 end$$
+delimiter ;
+
+
+-- ----------------------------------------Editar Tipo Cliente----------------------------------------
+
+delimiter $$
+   create procedure sp_editarTipoCliente(in codTCli int, in desTCli varchar(150))
+      begin
+         update TipoCliente TC
+            set TC.descripcionTipoCliente = desTCli
+               where TC.codigoTipoCliente = codTCli;
+      end$$
+delimiter ;
+
+call sp_editarTipoCliente(1,'hola');
 -- ----------------------------------Agregar Cliente----------------------------------------------
 
 delimiter $$
@@ -838,6 +903,84 @@ delimiter ;
 
 -- call sp_editarCliente();
 
+-- --- Procedimientos almacenados Tipo Paquete --- --
+
+ 
+
+-- --- Agregar TipoPaquete --- --
+Delimiter $$
+    Create procedure sp_AgregarTipoPaquete (in codigoTipoPaquete int, in descripcionTipoPaquete varchar(100))
+        Begin
+            Insert into TipoPaquete(codigoTipoPaquete, descripcionTipoPaquete)
+                values(codigoTipoPaquete, descripcionTipoPaquete);
+        End$$
+Delimiter ;
+
+ 
+
+call sp_AgregarTipoPaquete(20, "Fragil");
+call sp_AgregarTipoPaquete(21, "Pesado");
+call sp_AgregarTipoPaquete(22, "inframable");
+call sp_AgregarTipoPaquete(23, "Ligero");
+
+ 
+
+-- --- Listar TipoPaquete --- --
+Delimiter $$
+    Create procedure sp_ListarTipoPaquetes ()
+        Begin
+            Select 
+                T.codigoTipoPaquete,
+                T.descripcionTipoPaquete
+            From TipoPaquete T;
+        End$$
+Delimiter ;
+
+ 
+
+call sp_ListarTipoPaquetes();
+
+ 
+
+-- --- Buscar TipoPaquete --- --
+Delimiter $$
+    Create procedure sp_BuscarTipoPaquete (in codigoTipoPaquete int)
+        Begin
+            Select
+                T.codigoTipoPaquete,
+                T.descripcionTipoPaquete
+            From TipoPaquete T
+                where T.codigoTipoPaquete = codigoTipoPaquete;
+        End$$
+Delimiter ;
+
+ 
+
+call sp_BuscarTipoPaquete(20);
+
+ 
+
+-- --- EditarTipoPaquete --- --
+Delimiter $$
+    Create procedure sp_EditarTipoPaquete(in codigoTipoPaquete int, in descripcionTipoPaquete varchar(100))
+        Begin
+            Update TipoPaquete T
+                set T.descripcionTipoPaquete = descripcionTipoPaquete
+                    where T.codigoTipoPaquete = codigoTipoPaquete;
+        End$$
+Delimiter ;
+
+ 
+
+-- --- Eliminar TipoPaquete --- --
+Delimiter $$
+    Create procedure sp_EliminarTipoPaquete (in codTipoPaquete int)
+        Begin
+            Delete from TipoPaquete
+                where codigoTipoPaquete = codTipoPaquete;
+        End$$
+Delimiter ;
+
 -- -----------------------------------Agregar Paquete-----------------------------------------------
 
 delimiter $$
@@ -848,10 +991,10 @@ delimiter $$
       end$$
 delimiter ;
 
-call sp_agregarPaquete('Grande', '10 kg', 'Ropa', 1);
-call sp_agregarPaquete('Pequeño', '12 kg', 'Juguetes', 2);
-call sp_agregarPaquete('Mediano', '32 kg', 'Computadora', 1);
-call sp_agregarPaquete('Pequeño', '18 kg', 'Microfono', 2);
+call sp_agregarPaquete('Grande', '10 kg', 'Ropa', 20);
+call sp_agregarPaquete('Pequeño', '12 kg', 'Juguetes', 22);
+call sp_agregarPaquete('Mediano', '32 kg', 'Computadora', 21);
+call sp_agregarPaquete('Pequeño', '18 kg', 'Microfono', 23);
 
 -- ------------------------------------Listar Paquete-----------------------------------------------
 
@@ -913,73 +1056,88 @@ delimiter ;
 
 -- call sp_editarPaquete();
 
--- ---------------------------------------Agregar Tipo Cliente --------------------------------------
 
-delimiter $$
-   create procedure sp_agregarTipoCliente(in desTCli varchar(150))
-      begin
-         insert into TipoCliente(descripcionTipoCliente)
-            values(desTCli);
-      end$$
-delimiter ;
+ -- --- Procedimientos Almacenados Ruta --- --
 
-call sp_agregarTipoCliente('');
-call sp_agregarTipoCliente('');
-call sp_agregarTipoCliente('');
-call sp_agregarTipoCliente('');
+ 
 
--- ----------------------------------------Listar Tipo Cliente --------------------------------------
+-- --- Agregar Ruta --- --
+Delimiter $$
+    Create procedure sp_AgregarRuta (in codigoRuta int, in distancia varchar(100), in medioDeTransporte varchar(100), in estadoRuta varchar(100))
+        Begin
+            Insert into Ruta (codigoRuta, distancia, medioDeTransporte, estadoRuta)
+                values(codigoRuta, distancia, medioDeTransporte, estadoRuta);
+        End$$
+Delimiter ;
 
-delimiter $$
-   create procedure sp_listarTipoClientes()
-      begin
-         select
-            TC.codigoTipoCliente,
-            TC.descripcionTipoCliente
-		 from TipoCliente TC;
-      end$$
-delimiter ;
+ 
 
-call sp_listarTipoClientes();
+call sp_AgregarRuta(120, "32 Km", "Carro", "Segura");
+call sp_AgregarRuta(121, "10 Km", "Moto", "Con trafico, Seguro");
+call sp_AgregarRuta(122, "20 Km", "Carro", "Accidentado");
+call sp_AgregarRuta(123, "20 Km", "Moto", "Seguro");
 
--- ----------------------------------------Buscar Tipo Cliente --------------------------------------
+ 
 
-delimiter $$
-   create procedure sp_buscarTipoCliente(in codTCli int)
-      begin
-		select
-            TC.codigoTipoCliente,
-            TC.descripcionTipoCliente
-		 from TipoCliente TC where TC.codigoTipoCliente = codTCli;
-      end$$
-delimiter ;
+-- --- Listar Rutas --- --
+Delimiter $$
+    Create procedure sp_ListarRutas ()
+    Begin
+        Select
+            R.codigoRuta,
+            R.distancia,
+            R.medioDeTransporte,
+            R.estadoRuta
+        From Ruta R;
+    End$$
+Delimiter ;
 
-call sp_buscarTipoCliente(2);
+ 
 
--- ----------------------------------------Eliminar Tipo Cliente ------------------------------------
+call sp_ListarRutas();
 
-delimiter $$
-   create procedure sp_eliminarTipoCliente(in codTCli int)
-     begin
-        delete from TipoCliente
-           where TipoCliente.codigoTipoCliente = codTCli;
-	 end$$
-delimiter ;
+ 
 
-call sp_eliminarTipoCliente(2);
+-- --- Buscar Ruta --- --
+Delimiter $$
+    Create procedure sp_BuscarRuta(in codigoRuta int)
+        Begin
+            Select 
+                R.codigoRuta,
+                R.distancia,
+                R.medioDeTransporte,
+                R.estadoRuta
+            From Ruta R
+                where R.codigoRuta = codigoRuta;
+        End$$
+Delimiter ;
 
--- ----------------------------------------Editar Tipo Cliente----------------------------------------
+ 
 
-delimiter $$
-   create procedure sp_editarTipoCliente(in codTCli int, in desTCli varchar(150))
-      begin
-         update TipoCliente TC
-            set TC.descripcionTipoCliente = desTCli
-               where TC.codigoTipoCliente = codTCli;
-      end$$
-delimiter ;
+call sp_BuscarRuta(121);
 
-call sp_editarTipoCliente(1,'hola');
+ 
+
+-- --- Editar Ruta --- --
+Delimiter $$
+    Create procedure sp_EditarRuta(in codigoRuta int, in distancia varchar(100), in medioDeTransporte varchar(100), in estadoRuta varchar(100))
+        Begin
+            Update Ruta R
+                set R.distancia = distancia, R.medioDeTransporte = medioDeTransporte, R.estadoRuta = estadoRuta
+                    where R.codigoRuta = codigoRuta;
+        End$$
+Delimiter ;
+
+ 
+
+-- --- Eliminar Ruta --- --
+Delimiter $$
+    Create procedure sp_EliminarRuta(in codRuta int)
+        Begin
+            Delete from Ruta
+                where codigoRuta = codRuta;
+        End$$
+Delimiter ;
 
 
 
