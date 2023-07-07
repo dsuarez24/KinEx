@@ -39,16 +39,18 @@ Create table Empleados(
     codigoTipoEmpleado int not null,
     primary key PK_codigoEmpleado (codigoEmpleado),
     constraint FK_Empleados_TipoEmpleado foreign key 
-		(codigoTipoEmpleado) references TipoEmpleado(codigoTipoEmpleado) on delete cascade
+		(codigoTipoEmpleado) references TipoEmpleado(codigoTipoEmpleado)
 );
 
-Create table Productos(
+Create table Producto(
     codigoProducto int not null,
     nombreProducto varchar(150) not null,
     cantidad int not null,
     precio varchar(100) not null,
     codigoTipoProducto int not null,
-    primary key PK_codigoProducto (codigoProducto)
+    primary key PK_codigoProducto (codigoProducto),
+    constraint FK_Producto_TipoProducto foreign key
+		(codigoTipoProducto) references TipoProducto(codigoTipoProducto)
 );
 
 Create table Usuario(
@@ -210,3 +212,143 @@ Delimiter $$
 Delimiter ;
 
 call sp_ListarUsuarios();
+
+-- ------------------------------------- Procedimientos almacenados Entidad Empleados -----------------------------------
+-- describe Empleados
+-- ------------------------------------- AGREGAR Empleados ----------------------------------------------------------------------------------------------------------------------------------
+Delimiter $$
+	Create procedure sp_AgregarEmpleado(in carnetEmpleado int, apellidoEmpleado varchar(150), nombresEmpleado varchar(150), in direccionEmpleado varchar(150), in telefonoContacto varchar(10), in codigoTipoEmpleado int)
+		Begin
+			Insert into Empleados (carnetEmpleado, apellidoEmpleado, nombresEmpleado, direccionEmpleado, telefonoContacto, codigoTipoEmpleado)
+				Values (carnetEmpleado, apellidoEmpleado, nombresEmpleado, direccionEmpleado, telefonoContacto, codigoTipoEmpleado);
+        End$$	
+Delimiter ;
+
+call sp_AgregarEmpleado('2023001', 'Ramirez ', 'Sebastián', 'Zona 7', '23658974', 3);
+call sp_AgregarEmpleado('2023002', 'Palacios', 'Daniel', 'Zona 5', '12365485', 1);
+call sp_AgregarEmpleado('2023003', 'Rosales', 'Nancy', 'Zona 8', '30210369', 2);
+
+-- --------------------------------------------------LISTAR Empleados ----------------------------------------------------------------------------------------------------------
+Delimiter $$
+	Create procedure sp_ListarEmpleados()
+		Begin
+			Select 
+			E.codigoEmpleado, 
+            E.carnetEmpleado, 
+            E.apellidoEmpleado, 
+            E.nombresEmpleado, 
+            E.direccionEmpleado, 
+            E.telefonoContacto, 
+            E.codigoTipoEmpleado
+            from Empleados E;
+        End$$	
+Delimiter ;
+
+call sp_ListarEmpleados();
+
+-- ------------------------- BUSCAR Empleados---------------------------------------------------------------------------------------------------------------------------------------
+Delimiter $$
+	Create procedure sp_BuscarEmpleados(in codEmp int)
+		Begin
+			Select 
+            E.codigoEmpleado, 
+            E.carnetEmpleado, 
+            E.apellidoEmpleado, 
+            E.nombresEmpleado, 
+            E.direccionEmpleado, 
+            E.telefonoContacto, 
+            E.codigoTipoEmpleado
+            from Empleados E where codigoEmpleado = codEmp;
+        End$$
+Delimiter ;
+
+-- ---------------------------ELIMINAR Empleados---------------------------------------------------------------------------------------------------------------------------------------------
+Delimiter $$
+	Create procedure sp_EliminarEmpleados(in codEmp int)
+		Begin
+			Delete from Empleados
+				where codigoEmpleado = codEmp;
+		End$$
+Delimiter ;
+
+-- --------------------- EDITAR Empleados -----------------------------------------------------------------------------------------------------------------------------------------------
+Delimiter $$
+	Create procedure sp_EditarEmpleado(in codEmp int, in carnEmp int, in apeEmp varchar(150), in nomEmp varchar(150), in direcEmp varchar(150), in telCon varchar(10), in codTipEmp int)
+		Begin
+			Update Empleados E
+				set E.carnetEmpleado = carnEmp, 
+					E.apellidoEmpleado = apeEmp, 
+					E.nombresEmpleado =nomEmp, 
+					E.direccionEmpleado = direcEmp, 
+					E.telefonoContacto = telCon,
+					E.codigoTipoEmpleado = codTipEmp
+                where codigoEmpleado = codEmp;
+        End$$
+Delimiter ;
+
+-- ------------------------------------- Procedimientos almacenados Entidad Producto -----------------------------------
+-- describe Producto
+-- ------------------------------------- AGREGAR Producto -------------------------------------------------------------
+Delimiter $$
+	Create procedure sp_AgregarProducto(in codigoProducto int, in nombreProducto varchar(150), in cantidad int, in precio varchar(100), in codigoTipoProducto int)
+		Begin
+			Insert into Producto (codigoProducto, nombreProducto, cantidad, precio, codigoTipoProducto)
+				values (codigoProducto, nombreProducto, cantidad, precio, codigoTipoProducto);
+        End$$	
+Delimiter ;
+
+call sp_AgregarProducto(1, 'Abarrotes', 6, 'Q.3000', 3);
+call sp_AgregarProducto(2, 'Art. de libreria', 56, 'Q.10000', 1);
+call sp_AgregarProducto(3, 'Articulos de computación', 15, 'Q.25000', 2);
+
+-- --------------------------------------------------LISTAR Productos ----------------------------------------------------------------------------------------------------------
+Delimiter $$
+	Create procedure sp_ListarProductos()
+		Begin
+			Select 
+            P.codigoProducto, 
+            P.nombreProducto, 
+            P.cantidad,
+            P.precio,
+            P.codigoTipoProducto
+            from Producto = P;
+		End$$
+Delimiter ;
+
+call sp_ListarProductos;
+
+-- ------------------------- BUSCAR Producto ---------------------------------------------------------------------------------------------------------------------------------------
+Delimiter $$
+	Create procedure sp_BuscarProducto(in codProducto int)
+		Begin
+			Select
+			P.codigoProducto, 
+            P.nombreProducto, 
+            P.cantidad,
+            P.precio,
+            P.codigoTipoProducto
+            from Producto = P where codigoProducto = codProducto;
+        End$$
+Delimiter ;
+
+-- ---------------------------ELIMINAR Producto ---------------------------------------------------------------------------------------------------------------------------------------------
+Delimiter $$
+	Create procedure sp_EliminarProducto(in codProducto int)
+		Begin
+			Delete from Producto
+				where codigoProducto = codProducto;
+        End$$
+Delimiter ;
+
+-- --------------------- EDITAR Producto -----------------------------------------------------------------------------------------------------------------------------------------------
+Delimiter $$
+	Create procedure sp_EditarProducto(in codProducto int, in nombProduc varchar(150), in cant int, in pre varchar(100), in codTipProduc int)
+		Begin
+			Update Producto P
+				set P.nombreProducto = nombProduc,
+					P.cantidad = cant,
+                    P.precio = pre,
+                    P.codigoTipoProducto = codTipProduc
+                where P.codigoProducto = codProducto;
+        End$$
+Delimiter ;
