@@ -6,7 +6,7 @@ Carnét: 2022233
 Fecha de creación: 	06/07/2023
 Fecha de Modificaión: 
 	06/07/2023 23:49 - samuel rodriguez
-//   
+//   06/07/2023 10:50 - Manuel Suarez
  */
 
 Drop database if exists DBKinEx; 
@@ -82,6 +82,30 @@ Create table Login(
     passwordLogin varchar(50) not null,
     primary key PK_usuarioMaster (usuarioMaster)
 );
+
+create table TipoUbicacion(
+	codigoTipoUbicacion int auto_increment not  null,
+	direccion varchar (100) not null,
+	primary key PK_codigoTipoUbicacion(codigoTipoUbicacion)
+);
+
+create table Ubicacion(
+    codigoUbicacion int auto_increment not null,
+    codigoTipoUbicacion int not null,
+    departamento varchar(100) not null,
+    municipio  varchar(100) not null,
+    aldeaColonia varchar (100) not null,
+    primary key PK_codigoUbicacion(codigoUbicacion),
+    constraint FK_Ubicacion_TipoUbicacion foreign key (codigoTipoUbicacion)
+        references TipoUbicacion (codigoTipoUbicacion)
+        on delete cascade
+);
+
+ 
+
+
+
+ 
 
 
 -- ---------------------------------AGREGAR EMPRESA--------------------------------
@@ -486,6 +510,220 @@ Delimiter $$
                 where P.codigoProducto = codProducto;
         End$$
 Delimiter ;
+-- _________________________ Crud De tipoUbicacion ________________________________________ 
+-- _________________________ agregar tipoUbicacion
+
+ 
+
+Delimiter $$
+
+ 
+
+    create procedure sp_AgregarTipoUbicacion(in direccion varchar(100))
+
+    Begin
+
+        Insert into TipoUbicacion(direccion)
+            values(direccion);
+
+
+    End$$
+
+ 
+
+Delimiter ;
+
+ 
+
+Call sp_AgregarTipoUbicacion('zona 1');
+Call sp_AgregarTipoUbicacion('zona 2');
+Call sp_AgregarTipoUbicacion('zona 3');
+Call sp_AgregarTipoUbicacion('zona 4');
+
+ 
+
+-- _________________________ Listar tipoUbicacion
+
+ 
+
+Delimiter $$
+
+    create procedure sp_ListarTipoUbicacion()
+
+    Begin
+
+        Select
+            TU.codigoTipoUbicacion,
+            TU.direccion
+                from TipoUbicacion TU;
+
+    End$$
+
+Delimiter ;
+
+Call sp_ListarTipoUbicacion();
+
+ 
+
+
+-- _________________________ Buscar tipoUbicacion
+
+ 
+
+Delimiter $$
+
+ 
+
+    create procedure sp_BuscarTipoUbicacion(in codigoTipoUbicacion int)
+
+    Begin 
+
+        Select
+            TU.codigoTipoUbicacion,
+            TU.direccion
+                from TipoUbicacion TU
+                    where codigoTipoUbicacion = codigoTipoUbicacion;
+    End$$
+
+ 
+
+Delimiter ;
+
+ 
+
+Call sp_BuscarTipoUbicacion(2);
+
+ 
+
+-- _________________________ Eliminar tipoUbicacion
+
+ 
+
+Delimiter $$
+
+ 
+
+    create procedure sp_EliminartipoUbicacion(in codigoTipoUbicacion int)
+
+        Begin
+
+        Delete from tipoUbicacion
+        where codigoTipoUbicacion = codigoTipoUbicacion;
+
+        End$$
+
+ 
+
+Delimiter ;
+
+ 
+
+
+-- _________________________ Crud De Ubicacion ________________________________________ 
+-- _________________________ agregar Ubicacion
+
+ 
+
+Delimiter $$
+    create procedure sp_AgregarUbicacion (in codigoTipoUbicacion int,in departamento varchar(100), in municipio varchar(100), in aldeaColonia varchar(100))
+        Begin
+            Insert into Ubicacion (codigoTipoUbicacion,departamento, municipio, aldeaColonia)
+                values (codigoTipoUbicacion,departamento, municipio, aldeaColonia);
+        End$$
+Delimiter ;
+
+ 
+
+Call sp_AgregarUbicacion('1','Alta Verapaz','Coban','1');
+Call sp_AgregarUbicacion('2','Baja Verapaz','Rabinal','2');
+Call sp_AgregarUbicacion('3','Chimaltenango','Tejar','3');
+Call sp_AgregarUbicacion('4','Peten','Jocotan','4');
+
+ 
+
+
+-- _________________________ Listar Ubicacion
+
+ 
+
+Delimiter $$
+
+ 
+
+    create procedure sp_ListarUbicacion()
+
+        Begin
+            Select
+                U.codigoUbicacion,
+                U.codigoTipoUbicacion,
+                U.departamento,
+                U.municipio,
+                U.aldeaColonia
+
+                from Ubicacion U;
+        End$$
+
+Delimiter ;
+
+ 
+
+Call sp_ListarUbicacion();
+
+ 
+
+-- _________________________ Buscar Ubicacion
+
+ 
+
+Delimiter $$
+
+ 
+
+    create procedure sp_BuscarUbicacion(in codigoUbicacion int)
+
+        Begin
+            Select
+                U.codigoUbicacion,
+                U.codigoTipoUbicacion,
+                U.departamento,
+                U.municipio,
+                U.aldeaColonia
+
+                from Ubicacion U
+                    where codigoUbicacion = codigoUbicacion;
+        End$$
+
+ 
+
+Call sp_BuscarUbicacion(1);
+
+ 
+
+-- _________________________ Eliminar Ubicacion
+
+ 
+
+Delimiter $$
+
+ 
+
+    create procedure sp_EliminarUbicacion(in codigoUbicacion int)
+
+    Begin
+        Delete from Ubicacion
+        where codigoUbicacion = codigoUbicacion;
+    End$$
+
+ 
+
+Delimiter ;
+
+
+ 
+
+
+
+
 
 
 
