@@ -6,6 +6,7 @@ Carnét: 2022233
 Fecha de creación: 	06/07/2023
 Fecha de Modificaión: 
 	06/07/2023 23:49 - samuel rodriguez
+//   
  */
 
 Drop database if exists DBKinEx; 
@@ -14,10 +15,10 @@ Create database DBKinEx;
 Use  DBKinEx;
 
 create table Empresas (
-    codigoEmpresa        int auto_increment not null,
-    nombreEmpresa         varchar(150) not null,
-    direccion             varchar(150) not null,
-    telefono              varchar(10) not null,
+    codigoEmpresa int auto_increment not null,
+    nombreEmpresa varchar(150) not null,
+    direccion varchar(150) not null,
+    telefono varchar(10) not null,
     primary key PK_codigoEmpresa (codigoEmpresa)
 
 );
@@ -28,6 +29,27 @@ create table TipoEmpleado(
     primary key PK_codigoTipoEmpleado (codigoTipoEmpleado)
 );
 
+Create table Empleados(
+	codigoEmpleado int auto_increment not null,
+    carnetEmpleado int not null,
+    apellidoEmpleado varchar(150) not null,
+    nombresEmpleado varchar(150) not null,
+    direccionEmpleado varchar(150) not null,
+    telefonoContacto varchar(10) not null,
+    codigoTipoEmpleado int not null,
+    primary key PK_codigoEmpleado (codigoEmpleado),
+    constraint FK_Empleados_TipoEmpleado foreign key 
+		(codigoTipoEmpleado) references TipoEmpleado(codigoTipoEmpleado) on delete cascade
+);
+
+Create table Productos(
+    codigoProducto int not null,
+    nombreProducto varchar(150) not null,
+    cantidad int not null,
+    precio varchar(100) not null,
+    codigoTipoProducto int not null,
+    primary key PK_codigoProducto (codigoProducto)
+);
 
 Create table Usuario(
 	codigoUsuario int not null auto_increment,
