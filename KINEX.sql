@@ -42,6 +42,19 @@ Create table Empleados(
 		(codigoTipoEmpleado) references TipoEmpleado(codigoTipoEmpleado)
 );
 
+Create table TipoProducto(
+    codigoTipoProducto int auto_increment not null,
+    descripcionTipoProducto       varchar(100) not null,
+    primary key PK_TipoProducto (codigoTipoProducto)
+);
+
+create table MetodoDePago(
+    codigoMetodoDePago int auto_increment not null,
+    descripcion       varchar(100) not null,
+    primary key PK_codigoMetodoDePago (codigoMetodoDePago)
+);
+
+
 Create table Producto(
     codigoProducto int not null,
     nombreProducto varchar(150) not null,
@@ -69,6 +82,7 @@ Create table Login(
     passwordLogin varchar(50) not null,
     primary key PK_usuarioMaster (usuarioMaster)
 );
+
 
 -- ---------------------------------AGREGAR EMPRESA--------------------------------
 Delimiter $$
@@ -178,7 +192,6 @@ Delimiter $$
         End$$
 Delimiter ;
 
-Call sp_EliminarTipoEmpleado(3);
 
 -- ---------------------------------- Agregar Usuarios ------------------------------------- --
 
@@ -286,6 +299,66 @@ Delimiter $$
         End$$
 Delimiter ;
 
+-- ------------------------------------- Procedimientos almacenados Tipo Empleado -----------------------------------
+-- codigoTipoProducto     descripcionTipoProducto  
+
+Delimiter $$
+	Create procedure sp_AgregarTipoProducto(in descripcionTipoProducto varchar(100))
+		Begin
+			Insert into TipoProducto (descripcionTipoProducto)
+				values (descripcionTipoProducto);
+        End$$	
+Delimiter ;
+call sp_AgregarTipoProducto("Mesa");
+call sp_AgregarTipoProducto("Florero");
+call sp_AgregarTipoProducto("Balon ");
+call sp_AgregarTipoProducto("Caja");
+call sp_AgregarTipoProducto("Escritorio");
+
+
+-- listar 
+
+Delimiter $$
+	Create procedure sp_ListarTipoProducto()
+		Begin
+			Select 
+            TP.codigoTipoProducto,
+            TP.descripcionTipoProducto
+            from TipoProducto = TP;
+		End$$
+Delimiter ;
+
+
+call sp_ListarTipoProducto();
+
+-- buscar 
+
+Delimiter $$
+	Create procedure sp_BuscarTipoProducto(in codTipoProducto int)
+		Begin
+			Select
+			TP.codigoTipoProducto,
+            TP.descripcionTipoProducto
+            from TipoProducto = TP where codigoTipoProducto = codTipoProducto;
+        End$$
+Delimiter ;
+-- eliminar
+Delimiter $$
+	Create procedure sp_EliminarTipoProducto(in codTipoProducto int)
+		Begin
+			Delete from TipoProducto
+				where codigoTipoProducto = codTipoProducto;
+        End$$
+Delimiter ;
+-- editar 
+Delimiter $$
+	Create procedure sp_EditarTipoProducto(in codProducto int, in codTipProduc int)
+		Begin
+			Update TipoProducto TP
+				set TP.codigoTipoProducto = codTipProduc
+                where P.codigoProducto = codProducto;
+        End$$
+Delimiter ;
 -- ------------------------------------- Procedimientos almacenados Entidad Producto -----------------------------------
 -- describe Producto
 -- ------------------------------------- AGREGAR Producto -------------------------------------------------------------
@@ -296,7 +369,6 @@ Delimiter $$
 				values (codigoProducto, nombreProducto, cantidad, precio, codigoTipoProducto);
         End$$	
 Delimiter ;
-
 call sp_AgregarProducto(1, 'Abarrotes', 6, 'Q.3000', 3);
 call sp_AgregarProducto(2, 'Art. de libreria', 56, 'Q.10000', 1);
 call sp_AgregarProducto(3, 'Articulos de computación', 15, 'Q.25000', 2);
@@ -352,3 +424,75 @@ Delimiter $$
                 where P.codigoProducto = codProducto;
         End$$
 Delimiter ;
+
+-- ------------------------------------- Procedimientos almacenados Metodo de pago  -----------------------------------
+-- MetodoDePago codigoMetodoDePago  descripcion  
+
+
+Delimiter $$
+	Create procedure sp_AgregarMetodoDePago(in descripcion varchar(100))
+		Begin
+			Insert into MetodoDePago (descripcion)
+				values (descripcion);
+        End$$	
+Delimiter ;
+call sp_AgregarMetodoDePago("Targeta de credito");
+call sp_AgregarMetodoDePago("Efectivo");
+call sp_AgregarMetodoDePago("Efectivo");
+call sp_AgregarMetodoDePago("Efectivo");
+call sp_AgregarMetodoDePago("Targeta de credito");
+
+
+-- listar 
+
+Delimiter $$
+	Create procedure sp_ListarMetodoDePago()
+		Begin
+			Select 
+            MDP.codigoMetodoDePago,
+            MDP.descripcion
+            from MetodoDePago = MDP;
+		End$$
+Delimiter ;
+
+
+call sp_ListarMetodoDePago();
+
+-- buscar 
+
+Delimiter $$
+	Create procedure sp_BuscarMetodoDePago(in codMetodoDePago int)
+		Begin
+			Select
+			MDP.codigoMetodoDePago,
+            MDP.descripcion
+            from MetodoDePago = MDP where codigoMetodoDePago = codMetodoDePago;
+        End$$
+Delimiter ;
+-- eliminar
+Delimiter $$
+	Create procedure sp_EliminarMetodoDePago(in codTipoProducto int)
+		Begin
+			Delete from TipoProducto
+				where codigoTipoProducto = codMetodoDePago;
+        End$$
+Delimiter ;
+-- editar 
+Delimiter $$
+	Create procedure sp_EditarMetodoDePago(in codMetodoDePago int, in codTipProduc int)
+		Begin
+			Update TipoMetodoDePago MDP
+				set MDP.codigoTipoProducto = codTipProduc
+                where P.codigoProducto = codProducto;
+        End$$
+Delimiter ;
+
+
+
+
+
+
+
+
+
+
