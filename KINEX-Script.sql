@@ -3,7 +3,7 @@ Quinto Perito en Informatica
 Nombre: Diego Suarez, 
 Código Técnico: IN5BV
 Carnét: 2022233
-Fecha de creación: 	06/07/2023
+Fecha de creación: 	06/07/2023 22:49 Diego Suarez
 Fecha de Modificaión: 
 	06/07/2023 23:49 - samuel rodriguez
     07/07/2023 10:50 - Manuel Suarez
@@ -389,7 +389,7 @@ Delimiter $$
 			Select 
             TP.codigoTipoProducto,
             TP.descripcionTipoProducto
-            from TipoProducto = TP;
+            from TipoProducto TP;
 		End$$
 Delimiter ;
 
@@ -404,7 +404,7 @@ Delimiter $$
 			Select
 			TP.codigoTipoProducto,
             TP.descripcionTipoProducto
-            from TipoProducto = TP where codigoTipoProducto = codTipoProducto;
+            from TipoProducto  TP where codigoTipoProducto = codTipoProducto;
         End$$
 Delimiter ;
 -- eliminar
@@ -448,7 +448,7 @@ Delimiter $$
             P.cantidad,
             P.precio,
             P.codigoTipoProducto
-            from Producto = P;
+            from Producto  P;
 		End$$
 Delimiter ;
 
@@ -464,7 +464,7 @@ Delimiter $$
             P.cantidad,
             P.precio,
             P.codigoTipoProducto
-            from Producto = P where codigoProducto = codProducto;
+            from Producto  P where codigoProducto = codProducto;
         End$$
 Delimiter ;
 
@@ -516,7 +516,7 @@ Delimiter $$
 			Select 
             MDP.codigoMetodoDePago,
             MDP.descripcion
-            from MetodoDePago = MDP;
+            from MetodoDePago  MDP;
 		End$$
 Delimiter ;
 
@@ -531,7 +531,7 @@ Delimiter $$
 			Select
 			MDP.codigoMetodoDePago,
             MDP.descripcion
-            from MetodoDePago = MDP where codigoMetodoDePago = codMetodoDePago;
+            from MetodoDePago  MDP where codigoMetodoDePago = codMetodoDePago;
         End$$
 Delimiter ;
 -- eliminar
